@@ -1,9 +1,9 @@
-.game-board-cell-container{
+.game-board-container{
     display: grid;
     grid-template: repeat(3, 100px)/repeat(3, 100px);
     gap: 10px
 }
 
-.hidden{
-    display: none;
+.reset-btn{
+    display: block;
 }

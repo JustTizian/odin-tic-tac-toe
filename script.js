@@ -4,7 +4,6 @@ const Board = (() => {
     function setMarker(index, marker) {
         if (board[index]) return false;
         board[index] = marker;
-        logBoard()
         return true;
     }
 
@@ -26,10 +25,6 @@ const Board = (() => {
 
     function checkTie() {
         return board.every(cell => cell)
-    }
-
-    function logBoard() {
-        console.dir(board)
     }
 
     function getBoard() {
@@ -127,8 +122,7 @@ const Game = (() => {
 })()
 
 function player(name, marker) {
-    this.score = 0;
-    return { name, marker, score };
+    return { name, marker, score:0 };
 }
 
 const UI = (() => {
@@ -147,14 +141,13 @@ const UI = (() => {
         names["player1name"].value = ""
         names["player2name"].value = ""
 
-        console.log(name1)
         Game.start(name1, name2)
     })
 
     gameBoardContainer.addEventListener("click", (e) => {
         const target = e.target.closest(".game-cell")
         if (target) {
-            Game.playTurn(target.dataset.number)
+            Game.playTurn(Number(target.dataset.number))
         }
     })
 
@@ -188,7 +181,6 @@ const UI = (() => {
     }
 
     function renderBoard() {
-        console.log(Board.getBoard())
         Board.getBoard().forEach((cell, index) => gameBoardCells[index].textContent = cell)
     }
 
@@ -229,5 +221,4 @@ const UI = (() => {
     }
 })()
 
-UI.createBoard()
-//Game.start()
+window.addEventListener("DOMContentLoaded", UI.createBoard)

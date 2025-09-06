@@ -18,7 +18,7 @@ const Board = (() => {
             const [a, b, c] = winningPatterns[i]
             if (board[a] === null) continue;
             if (board[a] === board[b] && board[b] === board[c]) {
-                return {marker: board[a], pattern:[a,b,c]};
+                return { marker: board[a], pattern: [a, b, c] };
             }
         }
         return null;
@@ -55,7 +55,7 @@ const Game = (() => {
         Board.reset()
         UI.renderBoard()
         UI.reset()
-        
+
         players.length = 0
         players.push(
             player(name1, "X"),
@@ -65,7 +65,7 @@ const Game = (() => {
 
         UI.updateScoreDisplay(players, ties)
         UI.updateStatusBar(`Active Player: ${activePlayer.marker}`)
-        
+
     }
 
     function playTurn(index) {
@@ -74,14 +74,13 @@ const Game = (() => {
         }
         UI.renderBoard()
 
-        
+
         const winInfo = Board.checkWin()
         if (winInfo) {
             const winner = getPlayerByMarker(winInfo.marker)
             const winningPattern = winInfo.pattern
-            
+
             UI.updateStatusBar(`${winner.name} (${winner.marker}) won!`)
-            console.log(winningPattern)
             UI.markWinningPattern(winningPattern)
             winner.score++
             UI.updateScoreDisplay(players, ties)
@@ -99,7 +98,7 @@ const Game = (() => {
         }
 
         swapActivePlayer();
-        
+
     }
 
     function swapActivePlayer() {
@@ -128,7 +127,7 @@ const Game = (() => {
 })()
 
 function player(name, marker) {
-    return { name, marker, score:0 };
+    return { name, marker, score: 0 };
 }
 
 const UI = (() => {
@@ -212,11 +211,11 @@ const UI = (() => {
         boardLockControl(false)
     }
 
-    function showPlayerNamesDialog(){
+    function showPlayerNamesDialog() {
         playerNamesDialog.showModal()
     }
 
-    function markWinningPattern(pattern){
+    function markWinningPattern(pattern) {
         pattern.forEach(index => gameBoardCells[index].style.backgroundColor = "lightgreen")
     }
 

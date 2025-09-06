@@ -19,9 +19,7 @@ body{
     gap: 10px
 }
 
-.reset-btn{
-    display: none;
-}
+
 
 .start-button{
     margin: 20px
@@ -38,10 +36,15 @@ body{
     gap: 20px;
 }
 
+.reset-btn,
 .ui-button{
     font-size: 1.1rem;
     padding: 10px;
     background-color: rgb(173, 184, 184);
     border-radius: 10px ;
+}
+
+.reset-btn{
+    display: none;
 }
 

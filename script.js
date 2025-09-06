@@ -116,6 +116,7 @@ const Game = (() => {
         UI.reset();
         UI.renderBoard();
         UI.updateStatusBar(`Active Player: ${activePlayer.marker}`)
+        UI.showResetButton(false)
     }
 
     function getBoardState(){

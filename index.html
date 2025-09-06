@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <button class="start-button">Start New Game</button>
+    <button class="start-button ui-button">Start New Game</button>
     <div class="game-board-container">
 
     </div>
@@ -19,8 +19,20 @@
     <p class="score-display"></p>
     <p class="score-display"></p>
     <p class="score-display"></p>
-    <button class="reset-btn">Reset</button>
+    
+    <button class="reset-btn ui-button">Next Round</button>
 
+    <dialog class="player-names-dialog">
+    <form action="" method="dialog" class="player-names-form">
+        <p>
+            <label for="player1name">Player 1: <input id="player1name" name="player1name" type="text"></label>
+        </p>
+        <p>
+            <label for="player2name">Player 2: <input id="player2name" name="player2name" type="text"></label>
+        </p>
+        <button class="ui-button">Start</button>
+    </form>
+    </dialog>
 
 </body>
 

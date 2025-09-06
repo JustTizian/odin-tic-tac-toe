@@ -55,16 +55,18 @@ const Game = (() => {
     let ties = 0;
     let activePlayer = players[0];
 
-    function start() {
+    function start(name1, name2) {
         Board.reset()
-        UI.createBoard()
+        UI.renderBoard()
+        UI.reset()
         
         players.length = 0
         players.push(
-            player("Hänsel", "X"),
-            player("Gretel", "O"));
+            player(name1, "X"),
+            player(name2, "O"));
         activePlayer = players[0]
         ties = 0
+
         UI.updateScoreDisplay(players, ties)
         UI.updateStatusBar(`Active Player: ${activePlayer.marker}`)
         
@@ -78,7 +80,7 @@ const Game = (() => {
 
         const winner = getPlayerByMarker(Board.checkWin())
         if (winner) {
-            UI.updateStatusBar(`${winner.marker} won!`)
+            UI.updateStatusBar(`${winner.name} (${winner.marker}) won!`)
             winner.score++
             UI.updateScoreDisplay(players, ties)
             UI.boardLockControl(true)
@@ -96,11 +98,12 @@ const Game = (() => {
         }
 
         swapActivePlayer();
-        UI.updateStatusBar(`Active Player: ${activePlayer.marker}`)
+        
     }
 
     function swapActivePlayer() {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
+        UI.updateStatusBar(`Active Player: ${activePlayer.marker}`);
     }
 
     function getPlayerByMarker(marker) {
@@ -133,6 +136,20 @@ const UI = (() => {
     const gameBoardCells = []
     const statusDisplay = $(".status-display")
     const scoreDisplays = $$(".score-display")
+    const playerNamesDialog = $(".player-names-dialog")
+    const playerNamesForm = $(".player-names-form")
+
+    playerNamesForm.addEventListener("submit", (e) => {
+        const names = e.currentTarget.elements
+        const name1 = names["player1name"].value || "Player 1"
+        const name2 = names["player2name"].value || "Player 2"
+
+        names["player1name"].value = ""
+        names["player2name"].value = ""
+
+        console.log(name1)
+        Game.start(name1, name2)
+    })
 
     gameBoardContainer.addEventListener("click", (e) => {
         const target = e.target.closest(".game-cell")
@@ -145,7 +162,7 @@ const UI = (() => {
     resetButton.addEventListener("click", Game.reset)
 
     const startButton = $(".start-button")
-    startButton.addEventListener("click", Game.start)
+    startButton.addEventListener("click", showPlayerNamesDialog)
 
     function $(query) {
         return document.querySelector(query)
@@ -164,6 +181,7 @@ const UI = (() => {
             const cell = document.createElement("button")
             cell.classList.add("game-cell")
             cell.dataset.number = i
+            cell.disabled = true
             gameBoardCells.push(cell)
             gameBoardContainer.appendChild(cell)
         }
@@ -184,8 +202,8 @@ const UI = (() => {
 
     function updateScoreDisplay(players, ties) {
         scoreDisplays[0].textContent = `Ties ${ties}`
-        scoreDisplays[1].textContent = `${players[0].name} Score: ${players[0].score}`
-        scoreDisplays[2].textContent = `${players[1].name} Score: ${players[1].score}`
+        scoreDisplays[1].textContent = `${players[0].name} (${players[0].marker}) Score: ${players[0].score}`
+        scoreDisplays[2].textContent = `${players[1].name} (${players[1].marker}) Score: ${players[1].score}`
     }
     function showResetButton(bool) {
         bool ? resetButton.style.display = "block" : resetButton.style.display = "none"
@@ -195,6 +213,10 @@ const UI = (() => {
         boardLockControl(false)
     }
 
+    function showPlayerNamesDialog(){
+        playerNamesDialog.showModal()
+    }
+
     return {
         createBoard,
         renderBoard,
@@ -202,6 +224,10 @@ const UI = (() => {
         showResetButton,
         reset,
         updateStatusBar,
-        updateScoreDisplay
+        updateScoreDisplay,
+        showPlayerNamesDialog
     }
 })()
+
+UI.createBoard()
+//Game.start()

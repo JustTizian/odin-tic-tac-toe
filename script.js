@@ -118,10 +118,15 @@ const Game = (() => {
         UI.updateStatusBar(`Active Player: ${activePlayer.marker}`)
     }
 
+    function getBoardState(){
+        return Board.getBoard()
+    }
+
     return {
         start,
         playTurn,
-        reset
+        reset,
+        getBoardState
     }
 
 })()
@@ -186,7 +191,7 @@ const UI = (() => {
     }
 
     function renderBoard() {
-        Board.getBoard().forEach((cell, index) => gameBoardCells[index].textContent = cell)
+        Game.getBoardState().forEach((cell, index) => gameBoardCells[index].textContent = cell)
     }
 
     function boardLockControl(bool) {

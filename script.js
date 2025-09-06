@@ -18,9 +18,10 @@ const Board = (() => {
             const [a, b, c] = winningPatterns[i]
             if (board[a] === null) continue;
             if (board[a] === board[b] && board[b] === board[c]) {
-                return board[a];
+                return {marker: board[a], pattern:[a,b,c]};
             }
         }
+        return null;
     }
 
     function checkTie() {
@@ -48,7 +49,7 @@ const Game = (() => {
     const players = []
 
     let ties = 0;
-    let activePlayer = players[0];
+    let activePlayer;
 
     function start(name1, name2) {
         Board.reset()
@@ -73,14 +74,19 @@ const Game = (() => {
         }
         UI.renderBoard()
 
-        const winner = getPlayerByMarker(Board.checkWin())
-        if (winner) {
+        
+        const winInfo = Board.checkWin()
+        if (winInfo) {
+            const winner = getPlayerByMarker(winInfo.marker)
+            const winningPattern = winInfo.pattern
+            
             UI.updateStatusBar(`${winner.name} (${winner.marker}) won!`)
+            console.log(winningPattern)
+            UI.markWinningPattern(winningPattern)
             winner.score++
             UI.updateScoreDisplay(players, ties)
             UI.boardLockControl(true)
             UI.showResetButton(true)
-
             return;
         }
         if (Board.checkTie()) {
@@ -202,11 +208,16 @@ const UI = (() => {
     }
 
     function reset() {
+        gameBoardCells.forEach(cell => cell.style.backgroundColor = "")
         boardLockControl(false)
     }
 
     function showPlayerNamesDialog(){
         playerNamesDialog.showModal()
+    }
+
+    function markWinningPattern(pattern){
+        pattern.forEach(index => gameBoardCells[index].style.backgroundColor = "lightgreen")
     }
 
     return {
@@ -217,7 +228,8 @@ const UI = (() => {
         reset,
         updateStatusBar,
         updateScoreDisplay,
-        showPlayerNamesDialog
+        showPlayerNamesDialog,
+        markWinningPattern
     }
 })()
 
